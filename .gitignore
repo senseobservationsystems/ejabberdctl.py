@@ -1,0 +1,9 @@
+bin/
+build/
+dist/
+ejabberdctl.py.egg-info/
+include/
+lib/
+pip-selfcheck.json
+*.swp
+venv/
