@@ -7,3 +7,4 @@ lib/
 pip-selfcheck.json
 *.swp
 venv/
+__pycache__

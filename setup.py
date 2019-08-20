@@ -1,21 +1,13 @@
 import os
-import xml.sax.saxutils
 
 from setuptools import setup
 
-
-def read(*rnames):
-    text = open(os.path.join(os.path.dirname(__file__), *rnames)).read()
-    text = str(text, 'utf-8').encode('ascii', 'xmlcharrefreplace')
-    return xml.sax.saxutils.escape(text)
 
 setup(
     name='ejabberdctl.py',
     version='0.2',
     description='Python client for Ejabberd XML-RPC Administration API',
-    long_description=('{}{}{}'.format(read('README.rst'),
-                                      '\n\n-----\n\n',
-                                      read('CHANGELOG.rst'))),
+    long_description=('Please refere to our README.rst and CHANGELOG.rst file'),
     author='Marek Kuziel',
     author_email='marek@kuziel.nz',
     license='MIT',
