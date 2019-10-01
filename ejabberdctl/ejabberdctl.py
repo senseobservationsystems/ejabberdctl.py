@@ -816,7 +816,7 @@ class ejabberdctl(object):
         '''
         return self.ctl('user_sessions_info', {'user': user, 'host': host})
 
-    def remove_mam_for_user(user, server):
+    def remove_mam_for_user(self, user, server):
         '''
         Remove user archive
         '''
