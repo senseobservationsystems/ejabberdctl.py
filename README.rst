@@ -63,14 +63,7 @@ Tests
 
 ::
 
-    from ejabberdctl.tests import ejabberdctl_tests
-
-    host = 'example.com'
-    username = 'admin'
-    password = 'admin'
-
-    tests = ejabberdctl_tests(host, username, password)
-    tests.run_all()
+    python ejabberdctl/tests.py
 
 
 Coverage

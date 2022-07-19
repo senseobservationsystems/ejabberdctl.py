@@ -1,4 +1,7 @@
-from .ejabberdctl import ejabberdctl
+from http.client import RemoteDisconnected
+from unittest import TestCase, mock
+import unittest
+from ejabberdctl import ejabberdctl
 
 
 class ejabberdctl_tests(object):
@@ -6,15 +9,24 @@ class ejabberdctl_tests(object):
     ejabberdctl.py testing suite.
     '''
 
-    def __init__(self, host, username, password):
+    def __init__(self, server, port, host, username, password):
         '''
         Initialise the testing suite for
         Ejabberd XML-RPC Administration API client.
         '''
+        self.server = server
+        self.port = port
         self.host = host
         self.username = username
         self.password = password
-        self.ctl = ejabberdctl(host, username, password)
+
+        self.ctl = ejabberdctl(
+            server=server,
+            port=port,
+            host=host,
+            username=username,
+            password=password
+        )
 
     def run_all(self):
         '''
@@ -811,12 +823,27 @@ class ejabberdctl_tests(object):
         print('')
         assert isinstance(response['sessions_info'], list)
 
-if __name__ == '__main__':
-    # Setup
-    host = 'example.com'
-    username = 'admin'
-    password = 'admin'
 
-    # Run all Python Ejabberd XML-RPC Administration API client tests
-    tests = ejabberdctl_tests(host, username, password)
-    tests.run_all()
+class TestEjabberdCtl(TestCase):
+    def setUp(self):
+        self.host = 'local.nice-day.nl'
+        self.username = 'username'
+        self.password = 'password'
+
+        self.ctl = ejabberdctl(
+            host=self.host,
+            username=self.username,
+            password=self.password,
+        )
+    
+    @mock.patch('ejabberdctl.ejabberdctl.ctl')
+    def test_add_roster_item_failed(self, mock_ctl):
+        mock_ctl.side_effect = RemoteDisconnected()
+        with self.assertRaises(Exception) as cm:
+            self.ctl.status()
+
+        self.assertEqual('RemoteDisconnected', cm.exception.__class__.__name__)
+
+
+if __name__ == '__main__':
+    unittest.main()
