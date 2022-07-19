@@ -1,6 +1,7 @@
+import unittest
 from http.client import RemoteDisconnected
 from unittest import TestCase, mock
-import unittest
+
 from ejabberdctl import ejabberdctl
 
 
