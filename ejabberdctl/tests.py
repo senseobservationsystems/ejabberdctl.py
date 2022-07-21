@@ -830,7 +830,7 @@ class TestEjabberdCtl(TestCase):
         )
     
     @mock.patch('ejabberdctl.ejabberdctl.ctl')
-    def test_get_status_failed(self, mock_ctl):
+    def test_remote_disconnected_exception(self, mock_ctl):
         mock_ctl.side_effect = RemoteDisconnected()
         with self.assertRaises(Exception) as cm:
             self.ctl.status()
