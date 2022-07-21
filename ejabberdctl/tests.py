@@ -10,24 +10,16 @@ class ejabberdctl_tests(object):
     ejabberdctl.py testing suite.
     '''
 
-    def __init__(self, server, port, host, username, password):
+    def __init__(self, host, username, password):
         '''
         Initialise the testing suite for
         Ejabberd XML-RPC Administration API client.
         '''
-        self.server = server
-        self.port = port
         self.host = host
         self.username = username
         self.password = password
 
-        self.ctl = ejabberdctl(
-            server=server,
-            port=port,
-            host=host,
-            username=username,
-            password=password
-        )
+        self.ctl = ejabberdctl(host, username, password)
 
     def run_all(self):
         '''
@@ -838,7 +830,7 @@ class TestEjabberdCtl(TestCase):
         )
     
     @mock.patch('ejabberdctl.ejabberdctl.ctl')
-    def test_add_roster_item_failed(self, mock_ctl):
+    def test_get_status_failed(self, mock_ctl):
         mock_ctl.side_effect = RemoteDisconnected()
         with self.assertRaises(Exception) as cm:
             self.ctl.status()
