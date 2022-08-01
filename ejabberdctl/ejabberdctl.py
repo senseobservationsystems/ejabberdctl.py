@@ -1,8 +1,5 @@
-
-
 import xmlrpc.client
-
-from http.client import BadStatusLine
+from http.client import BadStatusLine, RemoteDisconnected
 
 
 class ejabberdctl(object):
@@ -38,6 +35,9 @@ class ejabberdctl(object):
             if payload:
                 return fn(self.params, payload)
             return fn(self.params)
+        except RemoteDisconnected as e:
+            print("CTL_RemoteDisconnected > ", e)
+            raise Exception('{}\n{}'.format(self.errors['connect'], e))
         except BadStatusLine as e:
             print("CTL_BadStatusLine > ", e)
             raise Exception('{}\n{}'.format(self.errors['connect'],
