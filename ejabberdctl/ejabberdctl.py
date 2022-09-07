@@ -1,8 +1,5 @@
-
-
 import xmlrpc.client
-
-from http.client import BadStatusLine
+from http.client import BadStatusLine, RemoteDisconnected
 
 
 class ejabberdctl(object):
@@ -38,10 +35,15 @@ class ejabberdctl(object):
             if payload:
                 return fn(self.params, payload)
             return fn(self.params)
+        except RemoteDisconnected as e:
+            print("CTL_RemoteDisconnected > ", e)
+            raise Exception('{}\n{}'.format(self.errors['connect'], e))
         except BadStatusLine as e:
+            print("CTL_BadStatusLine > ", e)
             raise Exception('{}\n{}'.format(self.errors['connect'],
                                             e.message))
         except xmlrpc.client.Fault as e:
+            print("CTL_xmlrpc > ", e)
             if 'account_unprivileged' in e.message:
                 raise Exception('{}\n{}'.format(self.errors['access'],
                                                 e.message))
@@ -813,3 +815,10 @@ class ejabberdctl(object):
         Get information about all sessions of a user
         '''
         return self.ctl('user_sessions_info', {'user': user, 'host': host})
+
+    def remove_mam_for_user(self, user, server):
+        '''
+        Remove user archive
+        '''
+        return self.ctl('remove_mam_for_user', {'user': user, 'server': server})
+
